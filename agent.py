@@ -9,6 +9,7 @@ class SimpleChatAgent:
         self.system_prompt = system_prompt
         self.model = model or os.getenv(
             "ANTHROPIC_MODEL", "claude-3-5-sonnet-20241022")
+        self.base_url = os.getenv("ANTHROPIC_API_URL") or os.getenv("ANTHROPIC_BASE_URL")
 
         if llm is not None:
             self.llm = llm
@@ -28,7 +29,7 @@ class SimpleChatAgent:
             )
 
         self.llm = ChatAnthropic(
-            model=self.model, api_key=api_key)
+            model=self.model, api_key=api_key, base_url=self.base_url)
 
     def _normalize_content(self, content: Any) -> str:
         if isinstance(content, str):
