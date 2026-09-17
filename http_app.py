@@ -1,11 +1,15 @@
 from __future__ import annotations
 
+import os
 from typing import Any, Optional
 
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from pydantic import BaseModel
 
 from agent_manager_runtime import AgentManagerRuntime
+
+load_dotenv()
 
 
 class ChatRequest(BaseModel):
@@ -33,3 +37,11 @@ def create_app(llm: Optional[Any] = None) -> FastAPI:
 
 
 app = create_app()
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    host = os.getenv("HOST", "127.0.0.1")
+    port = int(os.getenv("PORT", "8000"))
+    uvicorn.run("http_app:app", host=host, port=port, reload=True)
